@@ -46,6 +46,7 @@ export default function CaseDetail() {
   const [assignAgent, setAssignAgent] = useState("");
   const [pendingFiles, setPendingFiles] = useState([]);
   const [uploading, setUploading] = useState(false);
+  const [submittingComment, setSubmittingComment] = useState(false);
   const [dragOver, setDragOver] = useState(false);
 
   const refetchCase = useCallback(async () => {
@@ -124,16 +125,21 @@ export default function CaseDetail() {
 
   async function handleComment(e) {
     e.preventDefault();
-    if (!comment.trim()) return;
+    if (!comment.trim() || submittingComment) return;
+
+    const trimmedComment = comment.trim();
     dispatch(setCaseError(null));
+    setSubmittingComment(true);
     try {
-      await addComment(token, id, comment);
+      await addComment(token, id, trimmedComment);
       setComment("");
       await refetchCase();
       toast.success("Comment added");
     } catch (err) {
       dispatch(setCaseError(err.message || "Failed to add comment"));
       toast.error(err.message || "Failed to add comment");
+    } finally {
+      setSubmittingComment(false);
     }
   }
 
@@ -513,10 +519,24 @@ export default function CaseDetail() {
                   <Textarea
                     placeholder="Add a note..."
                     value={comment}
+                    disabled={submittingComment}
                     onChange={(e) => setComment(e.target.value)}
+                    className={submittingComment ? "cursor-progress opacity-80" : ""}
                   />
-                  <Button type="submit" size="sm" disabled={!comment.trim()}>
-                    Add Comment
+                  <Button
+                    type="submit"
+                    size="sm"
+                    disabled={!comment.trim() || submittingComment}
+                    className={submittingComment ? "cursor-progress" : ""}
+                  >
+                    {submittingComment ? (
+                      <>
+                        <Loader2 className="h-4 w-4 animate-spin" />
+                        Adding...
+                      </>
+                    ) : (
+                      "Add Comment"
+                    )}
                   </Button>
                 </form>
               )}
