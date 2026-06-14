@@ -53,7 +53,7 @@ VeriFacts-Task/
 │   └── index.js
 │
 ├── README.md
-└── .gitignore
+
 ```
 
 ## Main User Flows
