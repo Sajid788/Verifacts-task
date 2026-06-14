@@ -16,7 +16,6 @@ VeriFacts Task is a full-stack case management application built for a manager a
 - Document upload support for images, PDF, and DOC/DOCX files
 - Cloudinary-based file storage for uploaded documents
 - Protected frontend routes for public and authenticated pages
-- Vercel-ready frontend SPA rewrite configuration
 
 ## Tech Stack
 
@@ -24,73 +23,37 @@ VeriFacts Task is a full-stack case management application built for a manager a
 - Backend: Node.js, Express, MongoDB, Mongoose
 - Auth: JWT, bcryptjs
 - File uploads: Multer, Cloudinary
-- Deployment: Vercel
 
 ## Project Structure
 
 ```text
 VeriFacts-Task/
-|-- client/
-|   |-- public/                  # Static frontend assets
-|   |-- src/
-|   |   |-- assets/              # Images and frontend assets
-|   |   |-- components/
-|   |   |   |-- ui/              # Reusable UI primitives
-|   |   |   |-- Layout.jsx       # Shared app shell
-|   |   |   |-- StatusBadge.jsx  # Case status badge
-|   |   |   `-- StatusTimeline.jsx
-|   |   |-- lib/
-|   |   |   `-- validation.js    # Form and validation helpers
-|   |   |-- pages/
-|   |   |   |-- Login.jsx
-|   |   |   |-- Register.jsx
-|   |   |   |-- CaseList.jsx
-|   |   |   |-- CaseDetail.jsx
-|   |   |   `-- CreateCase.jsx
-|   |   |-- store/
-|   |   |   |-- apiBase.js       # API base URL
-|   |   |   |-- authApi.js       # Auth API calls
-|   |   |   |-- authSlice.js     # Auth state
-|   |   |   |-- caseApi.js       # Case API calls
-|   |   |   |-- caseSlice.js     # Case state
-|   |   |   |-- userApi.js       # User API calls
-|   |   |   |-- userSlice.js     # User state
-|   |   |   `-- store.js         # Redux store config
-|   |   |-- App.jsx              # Route definitions and guards
-|   |   |-- App.css
-|   |   |-- index.css
-|   |   `-- main.jsx             # Frontend entry point
-|   |-- index.html
-|   |-- package.json
-|   |-- vite.config.js
-|   `-- vercel.json              # SPA rewrite for direct route refresh
-|-- server/
-|   |-- config/
-|   |   |-- db.js                # MongoDB connection
-|   |   `-- cloudinary.js        # Cloudinary upload config
-|   |-- controllers/
-|   |   |-- auth.controller.js
-|   |   |-- case.controller.js
-|   |   `-- user.controller.js
-|   |-- middleware/
-|   |   |-- authenticate.js      # JWT auth middleware
-|   |   |-- authorize.js         # Role-based access control
-|   |   `-- upload.js            # Multer upload handling
-|   |-- models/
-|   |   |-- AuditLog.js
-|   |   |-- Case.js
-|   |   |-- Comment.js
-|   |   |-- Document.js
-|   |   `-- User.js
-|   |-- routes/
-|   |   |-- auth.routes.js
-|   |   |-- cases.routes.js
-|   |   `-- users.routes.js
-|   |-- uploads/                 # Local/sample uploaded files
-|   |-- index.js                 # API entry point
-|   |-- package.json
-|   `-- vercel.json              # Backend Vercel config
-`-- README.md
+│
+├── client/
+│   ├── public/
+│   ├── src/
+│   │   ├── components/
+│   │   ├── pages/
+│   │   ├── store/
+│   │   ├── lib/
+│   │   ├── App.jsx
+│   │   └── main.jsx
+│   ├── package.json
+│   ├── vite.config.js
+│   └── vercel.json
+│
+├── server/
+│   ├── config/
+│   ├── controllers/
+│   ├── middleware/
+│   ├── models/
+│   ├── routes/
+│   ├── package.json
+│   ├── vercel.json
+│   └── index.js
+│
+├── README.md
+└── .gitignore
 ```
 
 ## Main User Flows
@@ -167,21 +130,6 @@ CLOUDINARY_API_SECRET=your_cloudinary_api_secret
 CLOUDINARY_FOLDER=verifacts-documents
 ```
 
-The backend also supports these fallback variable names in `server/config/cloudinary.js`:
-
-- `CLOUD_NAME`
-- `CLOUD_API_KEY`
-- `CLOUD_API_SECRET`
-
-### 4. Configure frontend API base URL
-
-Update [client/src/store/apiBase.js](</d:/Assignment Project/VeriFacts-Task/client/src/store/apiBase.js>) to point to your backend API.
-
-Example:
-
-```js
-export const API_URL = "http://localhost:5000/api";
-```
 
 ### 5. Start the project
 
@@ -198,22 +146,6 @@ Frontend:
 cd client
 npm run dev
 ```
-
-## Deployment Notes
-
-- The frontend uses `BrowserRouter`, so direct route refreshes like `/login` or `/cases/:id` need a rewrite rule.
-- That is handled in `client/vercel.json` by rewriting all routes to `index.html`.
-- The backend has its own Vercel config in `server/vercel.json`.
-- If the frontend is deployed separately, make sure the Vercel project root is set to `client`.
-- If the backend is deployed separately, make sure the Vercel project root is set to `server`.
-
-## Current Frontend Pages
-
-- `Login`
-- `Register`
-- `CaseList`
-- `CaseDetail`
-- `CreateCase`
 
 ## Notes
 
